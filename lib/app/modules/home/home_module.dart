@@ -1,6 +1,6 @@
-import 'home_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:dio/dio.dart';
+
+import 'home_bloc.dart';
 import 'home_page.dart';
 
 class HomeModule extends ChildModule {
