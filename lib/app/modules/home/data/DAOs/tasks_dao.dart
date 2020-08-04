@@ -1,41 +1,34 @@
 import 'package:moor_flutter/moor_flutter.dart';
-import 'package:todo_bloc/app/modules/home/data/local_database.dart';
 
-import '../interfaces/database_interface.dart';
+import '../local_database.dart';
 import '../tables/tasks_table.dart';
 
 part 'tasks_dao.g.dart';
 
 @UseDao(tables: [Tasks])
 class TasksDao extends DatabaseAccessor<LocalDatabase>
-    with _$TasksDaoMixin
-    implements IDatabase {
+    with _$TasksDaoMixin{
   TasksDao(LocalDatabase attachedDatabase) : super(attachedDatabase);
 
-  @override
-  Future<int> deleteData(data) =>
-      (delete(tasks)..where((tbl) => tbl.id.equals(data.id))).go();
+  Future<int> deleteTask(task) =>
+      (delete(tasks)..where((tbl) => tbl.id.equals(task.id))).go();
 
-  @override
-  Stream<List<Task>> getAllData() => select(tasks).watch();
+  Stream<List<Task>> getAllTasks() => select(tasks).watch();
 
-  @override
-  Future<Task> getData(data) =>
-      (select(tasks)..where((tbl) => tbl.id.equals(data.id))).getSingle();
+  Future<Task> getTask(task) =>
+      (select(tasks)..where((tbl) => tbl.id.equals(task.id))).getSingle();
 
-  @override
-  Future<int> insertData(data) => into(tasks).insert(TasksCompanion(
-      id: data.id,
-      description: data.description,
-      isCompleted: data.isCompleted,
-      isSync: data.isSync));
+  Future<int> insertTask(task) => into(tasks).insert(TasksCompanion(
+      id: task.id,
+      description: task.description,
+      isCompleted: task.isCompleted,
+      isSync: task.isSync));
 
-  @override
-  Future<int> updateData(data) =>
-      (update(tasks)..where((tbl) => tbl.id.equals(data.id))).write(
+  Future<int> updateData(task) =>
+      (update(tasks)..where((tbl) => tbl.id.equals(task.id))).write(
           TasksCompanion(
-              id: data.id,
-              description: data.description,
-              isCompleted: data.isCompleted,
-              isSync: data.isSync));
+              id: task.id,
+              description: task.description,
+              isCompleted: task.isCompleted,
+              isSync: task.isSync));
 }
